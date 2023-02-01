@@ -1,7 +1,9 @@
 package com.example.app_tp1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ListView
@@ -45,6 +47,11 @@ class MainActivity : AppCompatActivity() {
 
             //on chercher les données
             this.run()
+        }
+
+        listView.onItemClickListener = AdapterView.OnItemClickListener {  parent, _, position, _ ->
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
         }
     }
 
