@@ -40,9 +40,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
+        val train = intent.extras?.get("train") as Train
+
+        for(i in 0 until train.stops.size) {
+            val stop: Stop = train.stops.get(i)
+
+            val lat = stop.station?.lat
+            val long = stop.station?.long
+
+            if(lat != null && long != null){
+                val ville = LatLng(lat.toDouble(), long.toDouble())
+                mMap.addMarker(MarkerOptions().position(ville).title("Marker in La Rochelle"))
+            }
+        }
+
+
+
+            // Add a marker in Sydney and move the camera
         val sydney = LatLng(46.160329, -1.151139)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in La Rochelle"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 }

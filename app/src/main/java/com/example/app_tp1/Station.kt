@@ -3,25 +3,29 @@ package com.example.app_tp1
 import android.os.Parcel
 import android.os.Parcelable
 
-open class Station(var code: String?, var libelle:String?, var long:String?, var lat:String?): Parcelable{
+class Station(var code: String, var libelle:String, var long:String, var lat:String):Parcelable{
+
     constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readString()
+        parcel.readString() as String,
+        parcel.readString() as String,
+        parcel.readString() as String,
+        parcel.readString() as String
     ) {
     }
 
     override fun toString(): String {
-        return libelle as String
+        return libelle
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(code)
+        parcel.writeString(libelle)
+        parcel.writeString(long)
+        parcel.writeString(lat)
     }
 
     override fun describeContents(): Int {
-        TODO("Not yet implemented")
-    }
-
-    override fun writeToParcel(p0: Parcel, p1: Int) {
-        TODO("Not yet implemented")
+        return 0
     }
 
     companion object CREATOR : Parcelable.Creator<Station> {
