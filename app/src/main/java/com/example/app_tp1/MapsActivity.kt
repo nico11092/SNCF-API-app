@@ -52,9 +52,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val dep:String = train.stops[0].station.toString()
         val arr:String = train.stops[train.stops.size-1].station.toString()
 
-        affichage.setText(train.type + " n°"+train.num+"\n"+dep+" - "+arr)
+        affichage.setText(train.type.toString() + " n°"+train.num+"\n"+dep+" - "+arr)
 
         var lastInit:LatLng? = null
+
+        var lat_som:Double = 0.0
+        var long_som:Double = 0.0
 
         for(i in 0 until train.stops.size) {
             val stop: Stop = train.stops.get(i)
@@ -63,8 +66,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val long = stop.station?.long
 
             if(lat != null && long != null){
+                lat_som += lat.toDouble()
+                long_som += long.toDouble()
+
                 val ville = LatLng(lat.toDouble(), long.toDouble())
-                mMap.addMarker(MarkerOptions().position(ville).title("Marker in La Rochelle"))
+                mMap.addMarker(MarkerOptions().position(ville).title("La station est ${stop.station!!.libelle}"))
 
                 if(i != 0){
                     mMap.addPolyline(PolylineOptions().add(lastInit, ville))
@@ -75,10 +81,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-
-
-            // Add a marker in Sydney and move the camera
-        val sydney = LatLng(46.160329, -1.151139)
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val ville_moy = LatLng(lat_som/train.stops.size-1, long_som/train.stops.size-1)
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ville_moy))
+        mMap.setMinZoomPreference(7.0f)
     }
 }

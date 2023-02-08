@@ -3,14 +3,14 @@ package com.example.app_tp1
 import android.os.Parcel
 import android.os.Parcelable
 
-class Train(val num:String, val type:String, val localHour:String, val localMinute:String): Parcelable{
+class Train(val num:String, val type:TypeTrain, val localHour:String, val localMinute:String): Parcelable{
     var from: Stop? = null
     var to:Stop? = null
     var stops = ArrayList<Stop>()
 
     constructor(parcel: Parcel) : this(
         parcel.readString() as String,
-        parcel.readString() as String,
+        TypeTrain.valueOf(parcel.readString()!!),
         parcel.readString() as String,
         parcel.readString() as String
     ) {
@@ -39,7 +39,7 @@ class Train(val num:String, val type:String, val localHour:String, val localMinu
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(num)
-        parcel.writeString(type)
+        parcel.writeString(type.name)
         parcel.writeString(localHour)
         parcel.writeString(localMinute)
         parcel.writeParcelable(from, flags)

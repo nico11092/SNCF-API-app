@@ -95,11 +95,21 @@ class MainActivity : AppCompatActivity() {
             //information du train
             val num = display_info.getString("trip_short_name")
             val type = display_info.getString("commercial_mode")
+            var type_train:TypeTrain? = null
+            if (type.contains("TER")){
+                type_train = TypeTrain.TER
+            }else if(type.contains("TGV")){
+                type_train = TypeTrain.TGV
+            }else if(type.contains("Inter")){
+                type_train = TypeTrain.INTERCITES
+            }else{
+                type_train = TypeTrain.OUIGO
+            }
 
             val localHour = stop_date.getString("departure_date_time").toString().substring(9, 11)
             val localMinute =
                 stop_date.getString("departure_date_time").toString().substring(11, 13)
-            val train = Train(num, type, localHour, localMinute)
+            val train = Train(num, type_train, localHour, localMinute)
 
             //info stop
             val route = listDepartures.getJSONObject(i).getJSONObject("route")
