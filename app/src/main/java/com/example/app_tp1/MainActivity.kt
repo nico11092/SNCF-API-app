@@ -88,13 +88,14 @@ class MainActivity : AppCompatActivity() {
         //On cherche les départ
         val listDepartures = response.getJSONArray("departures") as JSONArray
 
-        for(i in 0 until 1) {
+        for(i in 0 until 8) {
             val display_info = listDepartures.getJSONObject(i).getJSONObject("display_informations")
             val stop_date = listDepartures.getJSONObject(i).getJSONObject("stop_date_time")
 
             //information du train
             val num = display_info.getString("trip_short_name")
             val type = display_info.getString("commercial_mode")
+
             val localHour = stop_date.getString("departure_date_time").toString().substring(9, 11)
             val localMinute =
                 stop_date.getString("departure_date_time").toString().substring(11, 13)

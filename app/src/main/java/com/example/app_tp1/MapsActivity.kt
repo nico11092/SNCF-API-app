@@ -2,6 +2,8 @@ package com.example.app_tp1
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.AutoCompleteTextView
+import android.widget.TextView
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -10,6 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.app_tp1.databinding.ActivityMapsBinding
+import com.google.android.gms.maps.model.PolylineOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -40,7 +43,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+
+
+        val affichage: TextView = findViewById(R.id._affiche_train)
+
+
         val train = intent.extras?.get("train") as Train
+        val dep:String = train.stops[0].station.toString()
+        val arr:String = train.stops[train.stops.size-1].station.toString()
+
+        affichage.setText(train.type + " n°"+train.num+"\n"+dep+" - "+arr)
+
+        var lastInit:LatLng? = null
 
         for(i in 0 until train.stops.size) {
             val stop: Stop = train.stops.get(i)
@@ -51,6 +65,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if(lat != null && long != null){
                 val ville = LatLng(lat.toDouble(), long.toDouble())
                 mMap.addMarker(MarkerOptions().position(ville).title("Marker in La Rochelle"))
+
+                if(i != 0){
+                    mMap.addPolyline(PolylineOptions().add(lastInit, ville))
+                }
+
+                lastInit = ville
+
             }
         }
 
